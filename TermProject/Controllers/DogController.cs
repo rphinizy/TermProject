@@ -21,7 +21,7 @@ namespace TermProject.Controllers
         // GET: Dog
         public async Task<IActionResult> Index()
         {
-            var dogContext = _context.Dogs.Include(d => d.Gender);
+            var dogContext = _context.Dogs.Include(d => d.Gender).Include(d => d.Origin);
             return View(await dogContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace TermProject.Controllers
 
             var dog = await _context.Dogs
                 .Include(d => d.Gender)
+                .Include(d => d.Origin)
                 .FirstOrDefaultAsync(m => m.DogId == id);
             if (dog == null)
             {
@@ -48,6 +49,7 @@ namespace TermProject.Controllers
         public IActionResult Create()
         {
             ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderId");
+            ViewData["OriginId"] = new SelectList(_context.Origins, "OriginId", "OriginId");
             return View();
         }
 
@@ -56,7 +58,7 @@ namespace TermProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GenderId,DogId,Name,Breed,Age,Weight")] Dog dog)
+        public async Task<IActionResult> Create([Bind("OriginId,GenderId,DogId,Name,Breed,Age,Weight")] Dog dog)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +67,7 @@ namespace TermProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderId", dog.GenderId);
+            ViewData["OriginId"] = new SelectList(_context.Origins, "OriginId", "OriginId", dog.OriginId);
             return View(dog);
         }
 
@@ -82,6 +85,7 @@ namespace TermProject.Controllers
                 return NotFound();
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderId", dog.GenderId);
+            ViewData["OriginId"] = new SelectList(_context.Origins, "OriginId", "OriginId", dog.OriginId);
             return View(dog);
         }
 
@@ -90,7 +94,7 @@ namespace TermProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GenderId,DogId,Name,Breed,Age,Weight")] Dog dog)
+        public async Task<IActionResult> Edit(int id, [Bind("OriginId,GenderId,DogId,Name,Breed,Age,Weight")] Dog dog)
         {
             if (id != dog.DogId)
             {
@@ -118,6 +122,7 @@ namespace TermProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderId", dog.GenderId);
+            ViewData["OriginId"] = new SelectList(_context.Origins, "OriginId", "OriginId", dog.OriginId);
             return View(dog);
         }
 
@@ -131,6 +136,7 @@ namespace TermProject.Controllers
 
             var dog = await _context.Dogs
                 .Include(d => d.Gender)
+                .Include(d => d.Origin)
                 .FirstOrDefaultAsync(m => m.DogId == id);
             if (dog == null)
             {

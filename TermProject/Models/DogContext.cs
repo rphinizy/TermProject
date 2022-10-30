@@ -9,13 +9,21 @@ namespace TermProject.Models
         { }
         public DbSet<Dog> Dogs { get; set; }
         public DbSet<Gender> Genders { get; set; }
+        public DbSet<Origin> Origins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Origin>().HasData(
+                new Origin { OriginId = "E", Planet = "Earth" },
+                new Origin { OriginId = "M", Planet = "Mars" },
+                new Origin { OriginId = "B", Planet = "Bellerophon" }
+                );
+
             modelBuilder.Entity<Gender>().HasData(
                 new Gender { GenderId = "M", Sex = "Male" },
                 new Gender { GenderId = "F", Sex = "Female" }
                 );
+
 
             modelBuilder.Entity<Dog>().HasData(
                 new Dog
@@ -25,6 +33,7 @@ namespace TermProject.Models
                     Breed="Bulldog",
                     Age=2,
                     Weight=45,
+                    OriginId="E",
                     GenderId="F"
                 },
 
@@ -35,6 +44,7 @@ namespace TermProject.Models
                     Breed = "Mix",
                     Age = 6,
                     Weight = 30,
+                    OriginId = "M",
                     GenderId ="M"
                 },
 
@@ -45,7 +55,8 @@ namespace TermProject.Models
                     Breed = "Labrador",
                     Age = 1,
                     Weight = 60,
-                    GenderId="M"
+                    OriginId = "E",
+                    GenderId ="M"
                 },
 
                 new Dog
@@ -55,6 +66,18 @@ namespace TermProject.Models
                     Breed = "Husky",
                     Age = 8,
                     Weight = 55,
+                    OriginId = "E",
+                    GenderId = "M"
+                },
+
+                new Dog
+                {
+                    DogId = 5,
+                    Name = "Meezork",
+                    Breed = "blarphog",
+                    Age = 72,
+                    Weight = 5,
+                    OriginId = "B",
                     GenderId = "M"
                 }
 

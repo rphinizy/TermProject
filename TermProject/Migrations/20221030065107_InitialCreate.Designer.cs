@@ -10,14 +10,14 @@ using TermProject.Models;
 namespace TermProject.Migrations
 {
     [DbContext(typeof(DogContext))]
-    [Migration("20221003042819_InitialCreate")]
+    [Migration("20221030065107_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.17")
+                .HasAnnotation("ProductVersion", "3.1.30")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -44,6 +44,10 @@ namespace TermProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OriginId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("Weight")
                         .IsRequired()
                         .HasColumnType("int");
@@ -51,6 +55,8 @@ namespace TermProject.Migrations
                     b.HasKey("DogId");
 
                     b.HasIndex("GenderId");
+
+                    b.HasIndex("OriginId");
 
                     b.ToTable("Dogs");
 
@@ -62,6 +68,7 @@ namespace TermProject.Migrations
                             Breed = "Bulldog",
                             GenderId = "F",
                             Name = "Daisy",
+                            OriginId = "E",
                             Weight = 45
                         },
                         new
@@ -71,6 +78,7 @@ namespace TermProject.Migrations
                             Breed = "Mix",
                             GenderId = "M",
                             Name = "Fido",
+                            OriginId = "M",
                             Weight = 30
                         },
                         new
@@ -80,6 +88,7 @@ namespace TermProject.Migrations
                             Breed = "Labrador",
                             GenderId = "M",
                             Name = "Bingo",
+                            OriginId = "E",
                             Weight = 60
                         },
                         new
@@ -89,7 +98,18 @@ namespace TermProject.Migrations
                             Breed = "Husky",
                             GenderId = "M",
                             Name = "Balto",
+                            OriginId = "E",
                             Weight = 55
+                        },
+                        new
+                        {
+                            DogId = 5,
+                            Age = 72,
+                            Breed = "blarphog",
+                            GenderId = "M",
+                            Name = "Meezork",
+                            OriginId = "B",
+                            Weight = 5
                         });
                 });
 
@@ -118,11 +138,47 @@ namespace TermProject.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TermProject.Models.Origin", b =>
+                {
+                    b.Property<string>("OriginId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Planet")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OriginId");
+
+                    b.ToTable("Origins");
+
+                    b.HasData(
+                        new
+                        {
+                            OriginId = "E",
+                            Planet = "Earth"
+                        },
+                        new
+                        {
+                            OriginId = "M",
+                            Planet = "Mars"
+                        },
+                        new
+                        {
+                            OriginId = "B",
+                            Planet = "Bellerophon"
+                        });
+                });
+
             modelBuilder.Entity("TermProject.Models.Dog", b =>
                 {
                     b.HasOne("TermProject.Models.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TermProject.Models.Origin", "Origin")
+                        .WithMany()
+                        .HasForeignKey("OriginId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

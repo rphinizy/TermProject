@@ -4,8 +4,11 @@ namespace TermProject.Models
 {
     public class Dog
     {
+        [Required(ErrorMessage = "Please enter origin of pet. (i.e, earth, mars, bellerophon... etc")]
+        public string OriginId { get; set; }
+        public Origin Origin { get; set; }
 
-        [Required(ErrorMessage = "Please nter a gender.")]
+        [Required(ErrorMessage = "Please enter a gender.")]
         public string GenderId { get; set; }
         public Gender Gender { get; set; }
         // EF will instruct the database to automatically generate this value

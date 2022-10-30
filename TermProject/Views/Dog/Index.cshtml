@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Origin)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Gender)
             </th>
             <th>
@@ -34,7 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Gender.GenderId)
+                @Html.DisplayFor(modelItem => item.Origin.Planet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender.Sex)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
